@@ -1,0 +1,24 @@
+{
+  "name": "Hospital Patient Flow",
+  "description": "Registration -> Triage -> Examination -> Labs -> Pharmacy -> Discharge",
+  "nodes": [
+    {"id":"start","type":"Start","position":{"x":50,"y":200},"label":"Patient Arrives","properties":{}},
+    {"id":"reg","type":"Task","position":{"x":200,"y":200},"label":"Registration","properties":{"durationSecs":{"mean":180,"distribution":"normal","stdDev":30},"resourcesRequired":["Registration_Staff"],"successRate":1.0,"costPerRun":5}},
+    {"id":"tri","type":"Task","position":{"x":360,"y":200},"label":"Triage","properties":{"durationSecs":{"mean":120,"distribution":"normal","stdDev":20},"resourcesRequired":["Nurse"],"successRate":1.0,"costPerRun":8}},
+    {"id":"exam","type":"Task","position":{"x":520,"y":200},"label":"Examination","properties":{"durationSecs":{"mean":600,"distribution":"normal","stdDev":120},"resourcesRequired":["Doctor"],"successRate":0.88,"costPerRun":50}},
+    {"id":"labs_needed","type":"Decision","position":{"x":700,"y":200},"label":"Labs Needed?","properties":{"successRate":0.65}},
+    {"id":"lab","type":"Delay","position":{"x":860,"y":100},"label":"Lab Processing","properties":{"durationSecs":{"mean":1800,"distribution":"exponential"}}},
+    {"id":"pharmacy","type":"Task","position":{"x":860,"y":300},"label":"Pharmacy","properties":{"durationSecs":{"mean":240,"distribution":"normal","stdDev":45},"resourcesRequired":["Pharmacist"],"successRate":1.0,"costPerRun":15}},
+    {"id":"end","type":"End","position":{"x":1020,"y":200},"label":"Discharge","properties":{}}
+  ],
+  "edges": [
+    {"id":"e1","source":"start","target":"reg"},
+    {"id":"e2","source":"reg","target":"tri"},
+    {"id":"e3","source":"tri","target":"exam"},
+    {"id":"e4","source":"exam","target":"labs_needed"},
+    {"id":"e5","source":"labs_needed","target":"lab","label":"Yes"},
+    {"id":"e6","source":"labs_needed","target":"pharmacy","label":"No"},
+    {"id":"e7","source":"lab","target":"pharmacy"},
+    {"id":"e8","source":"pharmacy","target":"end"}
+  ]
+}

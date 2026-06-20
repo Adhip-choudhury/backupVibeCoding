@@ -1,0 +1,21 @@
+{
+  "name": "Warehouse Logistics",
+  "description": "Receiving -> Put-away -> Storage -> Picking -> Packing -> Shipping",
+  "nodes": [
+    {"id":"start","type":"Start","position":{"x":50,"y":200},"label":"Truck Arrives","properties":{}},
+    {"id":"receiving","type":"Task","position":{"x":200,"y":200},"label":"Receiving","properties":{"durationSecs":{"mean":300,"distribution":"normal","stdDev":60},"resourcesRequired":["Dock_Worker","Forklift"],"successRate":0.98,"costPerRun":10}},
+    {"id":"putaway","type":"Task","position":{"x":380,"y":200},"label":"Put-away","properties":{"durationSecs":{"mean":240,"distribution":"normal","stdDev":45},"resourcesRequired":["Forklift","Warehouse_Worker"],"successRate":0.95,"costPerRun":8}},
+    {"id":"picking","type":"Task","position":{"x":560,"y":200},"label":"Order Picking","properties":{"durationSecs":{"mean":180,"distribution":"normal","stdDev":30},"resourcesRequired":["Picker"],"successRate":0.92,"costPerRun":6}},
+    {"id":"packing","type":"Task","position":{"x":740,"y":200},"label":"Packing","properties":{"durationSecs":{"mean":150,"distribution":"normal","stdDev":25},"resourcesRequired":["Packer"],"successRate":0.97,"costPerRun":5}},
+    {"id":"shipping","type":"Task","position":{"x":920,"y":200},"label":"Shipping","properties":{"durationSecs":{"mean":120,"distribution":"fixed"},"resourcesRequired":["Dock_Worker"],"successRate":0.99,"costPerRun":7}},
+    {"id":"end","type":"End","position":{"x":1080,"y":200},"label":"Out for Delivery","properties":{}}
+  ],
+  "edges": [
+    {"id":"e1","source":"start","target":"receiving"},
+    {"id":"e2","source":"receiving","target":"putaway"},
+    {"id":"e3","source":"putaway","target":"picking"},
+    {"id":"e4","source":"picking","target":"packing"},
+    {"id":"e5","source":"packing","target":"shipping"},
+    {"id":"e6","source":"shipping","target":"end"}
+  ]
+}

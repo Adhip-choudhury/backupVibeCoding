@@ -1,0 +1,96 @@
+{
+  "id": "workflow_001",
+  "name": "Simple Manufacturing Line",
+  "description": "A basic manufacturing workflow with raw material processing, assembly, quality check, and packaging",
+  "version": 1,
+  "nodes": [
+    {
+      "id": "start_1",
+      "type": "Start",
+      "position": { "x": 100, "y": 100 },
+      "label": "Start Process",
+      "properties": {}
+    },
+    {
+      "id": "task_1",
+      "type": "Task",
+      "position": { "x": 300, "y": 100 },
+      "label": "Raw Material Processing",
+      "properties": {
+        "durationSecs": { "mean": 60, "distribution": "normal", "stdDev": 10 },
+        "resourcesRequired": ["Machine_A"],
+        "successRate": 0.95,
+        "costPerRun": 2.5,
+        "inputEntityTypes": ["RawMaterial"],
+        "outputEntityTypes": ["ProcessedMaterial"]
+      }
+    },
+    {
+      "id": "task_2",
+      "type": "Task",
+      "position": { "x": 500, "y": 100 },
+      "label": "Assembly",
+      "properties": {
+        "durationSecs": { "mean": 120, "distribution": "normal", "stdDev": 15 },
+        "resourcesRequired": ["Worker_1", "Worker_2"],
+        "successRate": 0.98,
+        "costPerRun": 5.0,
+        "inputEntityTypes": ["ProcessedMaterial"],
+        "outputEntityTypes": ["AssembledProduct"]
+      }
+    },
+    {
+      "id": "decision_1",
+      "type": "Decision",
+      "position": { "x": 700, "y": 100 },
+      "label": "Quality Check",
+      "properties": {
+        "successRate": 0.92
+      }
+    },
+    {
+      "id": "task_3",
+      "type": "Task",
+      "position": { "x": 900, "y": 50 },
+      "label": "Packaging",
+      "properties": {
+        "durationSecs": { "mean": 30, "distribution": "fixed" },
+        "resourcesRequired": ["Machine_B"],
+        "successRate": 0.99,
+        "costPerRun": 1.5,
+        "inputEntityTypes": ["AssembledProduct"],
+        "outputEntityTypes": ["PackagedProduct"]
+      }
+    },
+    {
+      "id": "end_1",
+      "type": "End",
+      "position": { "x": 1000, "y": 50 },
+      "label": "End Process",
+      "properties": {}
+    },
+    {
+      "id": "task_4",
+      "type": "Task",
+      "position": { "x": 900, "y": 150 },
+      "label": "Rework",
+      "properties": {
+        "durationSecs": { "mean": 90, "distribution": "normal", "stdDev": 20 },
+        "resourcesRequired": ["Worker_1"],
+        "successRate": 0.85,
+        "costPerRun": 3.0,
+        "inputEntityTypes": ["AssembledProduct"],
+        "outputEntityTypes": ["AssembledProduct"]
+      }
+    }
+  ],
+  "edges": [
+    { "id": "edge_1", "source": "start_1", "target": "task_1" },
+    { "id": "edge_2", "source": "task_1", "target": "task_2" },
+    { "id": "edge_3", "source": "task_2", "target": "decision_1" },
+    { "id": "edge_4", "source": "decision_1", "target": "task_3", "label": "Pass" },
+    { "id": "edge_5", "source": "decision_1", "target": "task_4", "label": "Fail" },
+    { "id": "edge_6", "source": "task_3", "target": "end_1" },
+    { "id": "edge_7", "source": "task_4", "target": "task_2" }
+  ]
+}

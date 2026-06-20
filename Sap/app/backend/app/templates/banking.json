@@ -1,0 +1,23 @@
+{
+  "name": "Bank Loan Approval",
+  "description": "Application -> Credit Check -> Document Verification -> Underwriting -> Approval -> Disbursement",
+  "nodes": [
+    {"id":"start","type":"Start","position":{"x":50,"y":200},"label":"Application Filed","properties":{}},
+    {"id":"credit_check","type":"Task","position":{"x":220,"y":200},"label":"Credit Check","properties":{"durationSecs":{"mean":120,"distribution":"normal","stdDev":20},"resourcesRequired":["Credit_System"],"successRate":1.0,"costPerRun":5}},
+    {"id":"doc_check","type":"Task","position":{"x":400,"y":200},"label":"Document Verification","properties":{"durationSecs":{"mean":300,"distribution":"normal","stdDev":60},"resourcesRequired":["Officer"],"successRate":0.88,"costPerRun":15}},
+    {"id":"underwriting","type":"Task","position":{"x":580,"y":200},"label":"Underwriting","properties":{"durationSecs":{"mean":900,"distribution":"normal","stdDev":180},"resourcesRequired":["Underwriter"],"successRate":0.75,"costPerRun":40}},
+    {"id":"approval","type":"Decision","position":{"x":760,"y":200},"label":"Approval Decision","properties":{"successRate":0.7}},
+    {"id":"reject","type":"End","position":{"x":940,"y":300},"label":"Rejected","properties":{}},
+    {"id":"disburse","type":"Task","position":{"x":940,"y":120},"label":"Disbursement","properties":{"durationSecs":{"mean":180,"distribution":"fixed"},"resourcesRequired":["Teller"],"successRate":1.0,"costPerRun":10}},
+    {"id":"end","type":"End","position":{"x":1100,"y":120},"label":"Loan Closed","properties":{}}
+  ],
+  "edges": [
+    {"id":"e1","source":"start","target":"credit_check"},
+    {"id":"e2","source":"credit_check","target":"doc_check"},
+    {"id":"e3","source":"doc_check","target":"underwriting"},
+    {"id":"e4","source":"underwriting","target":"approval"},
+    {"id":"e5","source":"approval","target":"disburse","label":"Approve"},
+    {"id":"e6","source":"approval","target":"reject","label":"Reject"},
+    {"id":"e7","source":"disburse","target":"end"}
+  ]
+}

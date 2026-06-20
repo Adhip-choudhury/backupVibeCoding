@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg-main: #F5F5F3;
+  --color-card: #FFFFFF;
+  --color-text-primary: #111111;
+  --color-text-secondary: #7A7A7A;
+  --color-accent-purple: #7B2CFF;
+  --color-success-green: #8DFF3B;
+  --color-danger-alert: #FF4D7A;
+  --color-border-light: #E8E8E5;
+  --color-nav-inactive: #F0F0EE;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #D4D4D0 #F5F5F3;
+}
+
+body {
+  background: #F5F5F3;
+  color: #111111;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}

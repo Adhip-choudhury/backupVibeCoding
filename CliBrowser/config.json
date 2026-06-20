@@ -1,0 +1,6 @@
+{
+  "aiProvider": "ollama",
+  "aiModel": "llama3.2",
+  "aiApiKey": "ollama",
+  "aiBaseUrl": "https//:122145"
+}

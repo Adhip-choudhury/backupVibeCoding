@@ -1,0 +1,260 @@
+/* Nova IDE Theme - Dark Professional */
+
+.root {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #d4d4d4;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 12px;
+    -fx-accent: #0078d4;
+}
+
+/* Menu Bar */
+.menu-bar {
+    -fx-background-color: #323233;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 2px;
+}
+
+.menu-bar .menu {
+    -fx-padding: 3px 8px;
+}
+
+.menu-bar .menu:hover {
+    -fx-background-color: #505050;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: #cccccc;
+}
+
+.menu-item {
+    -fx-padding: 4px 30px 4px 15px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #cccccc;
+}
+
+.menu-item:hover {
+    -fx-background-color: #094771;
+}
+
+/* Tab Pane */
+.tab-pane {
+    -fx-tab-min-height: 32px;
+    -fx-background-color: #1e1e1e;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #252526;
+    -fx-padding: 2px 2px 0 2px;
+}
+
+.tab {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 1px 0 0;
+    -fx-padding: 4px 15px;
+}
+
+.tab:selected {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #007acc #3c3c3c #1e1e1e #3c3c3c;
+    -fx-border-width: 1 1 0 1;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #969696;
+    -fx-font-size: 12px;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #ffffff;
+}
+
+/* Scroll Bars */
+.scroll-bar {
+    -fx-background-color: #1e1e1e;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #424242;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #555555;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #1e1e1e;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 2px;
+}
+
+/* Split Pane */
+.split-pane {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 0;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #3c3c3c;
+    -fx-padding: 1px;
+}
+
+/* File Explorer */
+.file-explorer {
+    -fx-background-color: #252526;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 1 0 0;
+}
+
+.panel-header {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: #969696;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 10px;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-width: 9999;
+}
+
+/* Tree View */
+.tree-view {
+    -fx-background-color: #252526;
+    -fx-text-fill: #cccccc;
+}
+
+.tree-cell {
+    -fx-background-color: #252526;
+    -fx-text-fill: #cccccc;
+    -fx-padding: 2px 0 2px 10px;
+}
+
+.tree-cell:selected {
+    -fx-background-color: #094771;
+}
+
+.tree-cell:hover {
+    -fx-background-color: #2a2d2e;
+}
+
+/* Terminal */
+.terminal-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1 0 0 0;
+}
+
+.terminal-panel .text-field {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #d4d4d4;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 4px 8px;
+}
+
+.terminal-panel .text-field:focused {
+    -fx-border-color: #007acc;
+}
+
+.terminal-panel .scroll-pane {
+    -fx-background-color: #1e1e1e;
+}
+
+.terminal-panel .scroll-pane .viewport {
+    -fx-background-color: #1e1e1e;
+}
+
+/* Error Panel */
+.error-panel {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 1 0 0 0;
+}
+
+.table-view {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #d4d4d4;
+    -fx-border-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 3px 6px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #969696;
+    -fx-font-size: 11px;
+}
+
+.table-row-cell {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: #d4d4d4;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #1e1e1e;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #094771;
+}
+
+.table-cell {
+    -fx-text-fill: #d4d4d4;
+    -fx-padding: 2px 6px;
+}
+
+/* Status Bar */
+.status-bar {
+    -fx-background-color: #8b0000;
+    -fx-padding: 3px 10px;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 11px;
+}
+
+.status-bar .label {
+    -fx-text-fill: #ffffff;
+}
+
+/* Tool Bar */
+.tool-bar {
+    -fx-background-color: #2d2d2d;
+    -fx-border-color: #3c3c3c;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 2px;
+}
+
+/* Context Menu */
+.context-menu {
+    -fx-background-color: #252526;
+    -fx-border-color: #454545;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 0;
+}
+
+/* Check Menu Item */
+.check-menu-item:checked {
+    -fx-background-color: #094771;
+}
+
+.check-menu-item .box {
+    -fx-background-color: #3c3c3c;
+}
+
+.check-menu-item:checked .mark {
+    -fx-background-color: #ffffff;
+}

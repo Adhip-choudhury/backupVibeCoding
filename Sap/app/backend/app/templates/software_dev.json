@@ -1,0 +1,26 @@
+{
+  "name": "Software Development Sprint",
+  "description": "Ticket -> Backlog -> Sprint Planning -> Dev -> Review -> QA -> Deploy",
+  "nodes": [
+    {"id":"start","type":"Start","position":{"x":50,"y":200},"label":"Ticket Created","properties":{}},
+    {"id":"backlog","type":"Task","position":{"x":200,"y":200},"label":"Backlog Refinement","properties":{"durationSecs":{"mean":600,"distribution":"normal","stdDev":120},"resourcesRequired":["PM"],"successRate":0.95,"costPerRun":20}},
+    {"id":"sprint","type":"Task","position":{"x":380,"y":200},"label":"Sprint Planning","properties":{"durationSecs":{"mean":1800,"distribution":"normal","stdDev":300},"resourcesRequired":["PM","Dev_Lead"],"successRate":1.0,"costPerRun":40}},
+    {"id":"dev","type":"Task","position":{"x":560,"y":200},"label":"Development","properties":{"durationSecs":{"mean":14400,"distribution":"normal","stdDev":3600},"resourcesRequired":["Developer"],"successRate":0.9,"costPerRun":200}},
+    {"id":"review","type":"Decision","position":{"x":740,"y":200},"label":"Code Review","properties":{"successRate":0.8}},
+    {"id":"qa","type":"Task","position":{"x":920,"y":120},"label":"QA Testing","properties":{"durationSecs":{"mean":7200,"distribution":"normal","stdDev":1800},"resourcesRequired":["QA_Engineer"],"successRate":0.9,"costPerRun":100}},
+    {"id":"rework","type":"Task","position":{"x":920,"y":320},"label":"Fix Issues","properties":{"durationSecs":{"mean":3600,"distribution":"normal","stdDev":900},"resourcesRequired":["Developer"],"successRate":0.85,"costPerRun":80}},
+    {"id":"deploy","type":"Task","position":{"x":1100,"y":120},"label":"Deployment","properties":{"durationSecs":{"mean":600,"distribution":"fixed"},"resourcesRequired":["DevOps"],"successRate":0.98,"costPerRun":30}},
+    {"id":"end","type":"End","position":{"x":1260,"y":120},"label":"Done","properties":{}}
+  ],
+  "edges": [
+    {"id":"e1","source":"start","target":"backlog"},
+    {"id":"e2","source":"backlog","target":"sprint"},
+    {"id":"e3","source":"sprint","target":"dev"},
+    {"id":"e4","source":"dev","target":"review"},
+    {"id":"e5","source":"review","target":"qa","label":"Approve"},
+    {"id":"e6","source":"review","target":"rework","label":"Changes Needed"},
+    {"id":"e7","source":"rework","target":"dev"},
+    {"id":"e8","source":"qa","target":"deploy"},
+    {"id":"e9","source":"deploy","target":"end"}
+  ]
+}

@@ -1,0 +1,658 @@
+{
+  "version": "1.0",
+  "shell": "NuclusCli",
+  "categories": [
+    {
+      "name": "File System",
+      "icon": "\udb80\udf30",
+      "commands": [
+        {
+          "name": "Get-ChildItem",
+          "aliases": ["ls", "dir", "gci"],
+          "description": "Lists files and folders in a directory.",
+          "syntax": "Get-ChildItem [[-Path] <string[]>] [[-Filter] <string>]",
+          "examples": ["ls", "ls C:\\Projects", "ls *.js -Recurse", "ls -Hidden"],
+          "notes": "Use -Recurse to search subdirectories. Use -Hidden to show hidden files."
+        },
+        {
+          "name": "Set-Location",
+          "aliases": ["cd", "sl"],
+          "description": "Changes the current working directory.",
+          "syntax": "Set-Location [[-Path] <string>]",
+          "examples": ["cd ..", "cd C:\\Projects", "cd ~", "cd /d D:"],
+          "notes": "Use 'cd -' to go to previous directory. 'cd ~' goes to home."
+        },
+        {
+          "name": "New-Item",
+          "aliases": ["ni", "mkdir"],
+          "description": "Creates a new file, folder, or registry key.",
+          "syntax": "New-Item [-Path] <string> [-ItemType <string>]",
+          "examples": ["mkdir NewFolder", "ni file.txt", "ni config.json -Force"],
+          "notes": "-ItemType can be 'File', 'Directory', or 'SymbolicLink'"
+        },
+        {
+          "name": "Remove-Item",
+          "aliases": ["rm", "del", "ri", "rmdir"],
+          "description": "Deletes files, folders, or registry keys.",
+          "syntax": "Remove-Item [-Path] <string[]>",
+          "examples": ["rm file.txt", "rm -Recurse folder", "del *.tmp"],
+          "notes": "Use -Recurse to delete non-empty folders. Use -Force to override."
+        },
+        {
+          "name": "Copy-Item",
+          "aliases": ["cp", "copy", "ci"],
+          "description": "Copies a file or folder from one location to another.",
+          "syntax": "Copy-Item [-Path] <string[]> [-Destination] <string>",
+          "examples": ["cp file.txt backup.txt", "cp -Recurse src dest", "copy *.js dist\\"],
+          "notes": "Use -Recurse to copy folders. Use -Verbose to see progress."
+        },
+        {
+          "name": "Move-Item",
+          "aliases": ["mv", "move", "mi"],
+          "description": "Moves or renames a file or folder.",
+          "syntax": "Move-Item [-Path] <string[]> [-Destination] <string>",
+          "examples": ["mv file.txt ..\\", "mv old.txt new.txt", "move folder\\* .\\"],
+          "notes": "Renaming is just moving within the same directory."
+        },
+        {
+          "name": "Rename-Item",
+          "aliases": ["ren", "rni"],
+          "description": "Renames a file, folder, or registry key.",
+          "syntax": "Rename-Item [-Path] <string> [-NewName] <string>",
+          "examples": ["ren old.txt new.txt", "rni file.txt file.md"],
+          "notes": "Cannot move items across directories; use Move-Item for that."
+        },
+        {
+          "name": "Get-Content",
+          "aliases": ["cat", "gc", "type"],
+          "description": "Reads the contents of a file and displays them.",
+          "syntax": "Get-Content [-Path] <string[]>",
+          "examples": ["cat file.txt", "gc log.txt -Tail 50", "type data.json | ConvertFrom-Json"],
+          "notes": "Use -Tail to read last N lines (like tail -f). Use -Wait to follow."
+        },
+        {
+          "name": "Set-Content",
+          "aliases": ["sc", "set"],
+          "description": "Writes new content to a file, replacing existing content.",
+          "syntax": "Set-Content [-Path] <string[]> [-Value] <Object[]>",
+          "examples": ["sc file.txt 'hello world'", "echo 'text' | sc file.txt"],
+          "notes": "Unlike Out-File, Set-Content uses string encoding by default."
+        },
+        {
+          "name": "Add-Content",
+          "aliases": ["ac"],
+          "description": "Appends content to a file without replacing existing content.",
+          "syntax": "Add-Content [-Path] <string[]> [-Value] <Object[]>",
+          "examples": ["ac log.txt 'new entry'", "echo 'line 2' | ac file.txt"],
+          "notes": "Creates the file if it doesn't exist."
+        },
+        {
+          "name": "Get-Location",
+          "aliases": ["pwd", "gl"],
+          "description": "Displays the current working directory path.",
+          "syntax": "Get-Location",
+          "examples": ["pwd", "gl"],
+          "notes": "Use 'gl -Stack' to see the location stack."
+        },
+        {
+          "name": "Clear-Host",
+          "aliases": ["cls", "clear"],
+          "description": "Clears the terminal screen.",
+          "syntax": "Clear-Host",
+          "examples": ["cls", "clear"],
+          "notes": "Does not clear scrollback buffer."
+        }
+      ]
+    },
+    {
+      "name": "Process Management",
+      "icon": "\u2699",
+      "commands": [
+        {
+          "name": "Get-Process",
+          "aliases": ["ps", "gps"],
+          "description": "Lists running processes on the system.",
+          "syntax": "Get-Process [[-Name] <string[]>]",
+          "examples": ["ps", "ps chrome", "ps -Id 1234", "ps | Sort-Object CPU -Desc"],
+          "notes": "Use -Id to filter by PID. Use -IncludeUserName to see owners."
+        },
+        {
+          "name": "Stop-Process",
+          "aliases": ["kill", "spps"],
+          "description": "Terminates a running process by name or PID.",
+          "syntax": "Stop-Process [-Id] <int[]> | [-Name] <string[]>",
+          "examples": ["kill notepad", "kill -Id 1234", "ps chrome | kill"],
+          "notes": "Use -Force to forcefully terminate. Use with caution."
+        },
+        {
+          "name": "Start-Process",
+          "aliases": ["start", "saps"],
+          "description": "Launches a new process (program, script, or file).",
+          "syntax": "Start-Process [-FilePath] <string>",
+          "examples": ["start notepad", "start https://google.com", "start powershell -Verb RunAs"],
+          "notes": "Use -Verb RunAs to run as administrator."
+        },
+        {
+          "name": "Get-Service",
+          "aliases": ["gsv"],
+          "description": "Gets the status of services on the system.",
+          "syntax": "Get-Service [[-Name] <string[]>]",
+          "examples": ["gsv", "gsv sshd", "gsv | Where-Object Status -eq Running"],
+          "notes": "Use -ComputerName to check remote machines."
+        },
+        {
+          "name": "Start-Service",
+          "aliases": ["sasv"],
+          "description": "Starts one or more stopped services.",
+          "syntax": "Start-Service [-Name] <string[]>",
+          "examples": ["sasv sshd", "Start-Service wuauserv"],
+          "notes": "Requires admin privileges for most services."
+        },
+        {
+          "name": "Stop-Service",
+          "aliases": ["spsv"],
+          "description": "Stops one or more running services.",
+          "syntax": "Stop-Service [-Name] <string[]>",
+          "examples": ["spsv wuauserv", "Stop-Service spooler"],
+          "notes": "Requires admin privileges for most services."
+        }
+      ]
+    },
+    {
+      "name": "Network",
+      "icon": "\ud83c\udf10",
+      "commands": [
+        {
+          "name": "Test-Connection",
+          "aliases": ["ping", "tc"],
+          "description": "Sends ICMP echo requests to test network connectivity.",
+          "syntax": "Test-Connection [-ComputerName] <string>",
+          "examples": ["ping google.com", "tc -Count 2 8.8.8.8"],
+          "notes": "Use -Count to set number of pings. Use -Quiet for boolean output."
+        },
+        {
+          "name": "Test-NetConnection",
+          "aliases": ["tnc"],
+          "description": "Tests network connectivity with ping, port, and route tracing.",
+          "syntax": "Test-NetConnection [-ComputerName] <string>",
+          "examples": ["tnc google.com", "tnc localhost -Port 3000", "tnc github.com -TraceRoute"],
+          "notes": "Use -Port to test a specific TCP port. Use -TraceRoute for hop tracing."
+        },
+        {
+          "name": "Resolve-DnsName",
+          "aliases": ["nslookup", "rdn"],
+          "description": "Resolves a hostname to an IP address via DNS.",
+          "syntax": "Resolve-DnsName [-Name] <string>",
+          "examples": ["nslookup google.com", "rdn github.com -Type MX"],
+          "notes": "Use -Type to query specific record types (A, MX, TXT, etc.)."
+        },
+        {
+          "name": "Get-NetIPAddress",
+          "aliases": ["ipconfig", "gnipa"],
+          "description": "Shows IP address configuration for all network adapters.",
+          "syntax": "Get-NetIPAddress",
+          "examples": ["ipconfig", "gnipa | Where-Object AddressFamily -eq IPv4"],
+          "notes": "Use 'ipconfig /flushdns' through PowerShell to flush DNS cache."
+        },
+        {
+          "name": "Get-NetAdapter",
+          "aliases": ["gna"],
+          "description": "Lists all network adapters and their status.",
+          "syntax": "Get-NetAdapter",
+          "examples": ["gna", "gna | Where-Object Status -eq Up"],
+          "notes": "Use -Name to filter by adapter name."
+        },
+        {
+          "name": "Invoke-WebRequest",
+          "aliases": ["curl", "wget", "iwr"],
+          "description": "Makes HTTP/HTTPS requests to web services.",
+          "syntax": "Invoke-WebRequest [-Uri] <Uri>",
+          "examples": ["curl https://api.github.com", "iwr -Method POST -Body $data $url"],
+          "notes": "Use -Method for different HTTP methods. Use -OutFile to save response."
+        },
+        {
+          "name": "Invoke-RestMethod",
+          "aliases": ["irm"],
+          "description": "Makes REST API requests with JSON/XML parsing.",
+          "syntax": "Invoke-RestMethod [-Uri] <Uri>",
+          "examples": ["irm https://api.github.com/repos/octocat/hello-world"],
+          "notes": "Automatically parses JSON/XML responses into PowerShell objects."
+        }
+      ]
+    },
+    {
+      "name": "System Information",
+      "icon": "\ud83d\udcc8",
+      "commands": [
+        {
+          "name": "Get-ComputerInfo",
+          "aliases": ["gci"],
+          "description": "Shows detailed system and OS information.",
+          "syntax": "Get-ComputerInfo",
+          "examples": ["gci", "Get-ComputerInfo | Select-Object OsName,OsVersion"],
+          "notes": "Returns comprehensive system properties."
+        },
+        {
+          "name": "Get-Date",
+          "aliases": ["date", "gd"],
+          "description": "Displays the current date and time.",
+          "syntax": "Get-Date",
+          "examples": ["date", "Get-Date -Format 'yyyy-MM-dd'", "gd -UFormat %Y"],
+          "notes": "Use -Format with .NET format strings. Use -UFormat with Unix format."
+        },
+        {
+          "name": "Get-WmiObject",
+          "aliases": ["gwmi"],
+          "description": "Queries WMI for system information (legacy).",
+          "syntax": "Get-WmiObject [-Class] <string>",
+          "examples": ["gwmi Win32_Processor", "gwmi Win32_Bios"],
+          "notes": "Use Get-CimInstance instead for newer systems."
+        },
+        {
+          "name": "Get-CimInstance",
+          "aliases": ["gcim"],
+          "description": "Queries CIM/WMI for system information (modern).",
+          "syntax": "Get-CimInstance [-ClassName] <string>",
+          "examples": ["gcim Win32_LogicalDisk", "gcim Win32_OperatingSystem"],
+          "notes": "Modern replacement for Get-WmiObject."
+        },
+        {
+          "name": "Get-HotFix",
+          "aliases": ["ghf"],
+          "description": "Lists installed Windows updates and hotfixes.",
+          "syntax": "Get-HotFix",
+          "examples": ["ghf", "Get-HotFix -Id KB5021234"],
+          "notes": "Only shows updates installed via Windows Update or MSI."
+        },
+        {
+          "name": "Get-Volume",
+          "aliases": ["gvol"],
+          "description": "Shows all mounted volumes and their properties.",
+          "syntax": "Get-Volume",
+          "examples": ["gvol", "Get-Volume -DriveLetter C"],
+          "notes": "Shows drive letters, file systems, size, and free space."
+        }
+      ]
+    },
+    {
+      "name": "Text & Strings",
+      "icon": "\ud83d\udd20",
+      "commands": [
+        {
+          "name": "Select-String",
+          "aliases": ["sls", "findstr", "grep"],
+          "description": "Searches text content using regex patterns.",
+          "syntax": "Select-String [-Pattern] <string[]>",
+          "examples": ["sls 'error' log.txt", "grep -r 'TODO' src\\", "ls | sls '.txt'"],
+          "notes": "Use -CaseSensitive for exact matching. Use -NotMatch to exclude."
+        },
+        {
+          "name": "Where-Object",
+          "aliases": ["where", "?"],
+          "description": "Filters objects from a pipeline based on conditions.",
+          "syntax": "Where-Object { <condition> }",
+          "examples": ["ps | where CPU -gt 10", "ls | ? Length -gt 1kb", "gsv | ? Status -eq Running"],
+          "notes": "Use script blocks { } for complex conditions."
+        },
+        {
+          "name": "ForEach-Object",
+          "aliases": ["foreach", "%"],
+          "description": "Processes each item in a pipeline, one at a time.",
+          "syntax": "ForEach-Object { <script> }",
+          "examples": ["ls | % { $_.Name }", "1..10 | foreach { $_ * 2 }"],
+          "notes": "$_ represents the current pipeline object."
+        },
+        {
+          "name": "Sort-Object",
+          "aliases": ["sort"],
+          "description": "Sorts objects by one or more properties.",
+          "syntax": "Sort-Object [[-Property] <string[]>]",
+          "examples": ["ps | sort CPU -Desc", "ls | sort Length", "gsv | sort Status"],
+          "notes": "Use -Descending for reverse order. Use -Unique for distinct values."
+        },
+        {
+          "name": "Group-Object",
+          "aliases": ["group"],
+          "description": "Groups objects that share common property values.",
+          "syntax": "Group-Object [[-Property] <string[]>]",
+          "examples": ["ps | group Company", "ls | group Extension"],
+          "notes": "Shows count and grouping details."
+        },
+        {
+          "name": "Measure-Object",
+          "aliases": ["measure"],
+          "description": "Calculates numeric statistics (min, max, sum, avg, count).",
+          "syntax": "Measure-Object [[-Property] <string[]>]",
+          "examples": ["ls | measure Length", "cat data.csv | measure -Line -Word -Char"],
+          "notes": "Use -Average, -Sum, -Minimum, -Maximum for specific stats."
+        },
+        {
+          "name": "Format-Table",
+          "aliases": ["ft"],
+          "description": "Formats output as a table with optional column selection.",
+          "syntax": "Format-Table [[-Property] <string[]>]",
+          "examples": ["ps | ft Name,CPU,PM", "ls | ft -AutoSize"],
+          "notes": "Use -AutoSize for better column widths. Use -Wrap for wrapped text."
+        },
+        {
+          "name": "Format-List",
+          "aliases": ["fl"],
+          "description": "Formats output as a list with one property per line.",
+          "syntax": "Format-List [[-Property] <string[]>]",
+          "examples": ["ps chrome | fl *", "gsv sshd | fl Name,Status,DisplayName"],
+          "notes": "Use '*', for all properties. Great for detailed views."
+        },
+        {
+          "name": "Format-Wide",
+          "aliases": ["fw"],
+          "description": "Formats output as a multi-column grid.",
+          "syntax": "Format-Wide [[-Property] <string>]",
+          "examples": ["ls | fw -Column 4", "gci | fw Name"],
+          "notes": "Use -Column to control grid width."
+        }
+      ]
+    },
+    {
+      "name": "PowerShell Core",
+      "icon": "\u26a1",
+      "commands": [
+        {
+          "name": "Get-Help",
+          "aliases": ["help", "man"],
+          "description": "Shows help documentation for PowerShell commands.",
+          "syntax": "Get-Help [[-Name] <string>]",
+          "examples": ["help ls", "Get-Help about_Arrays", "man ForEach-Object -Detailed"],
+          "notes": "Use -Detailed for full help. Use -Examples to show only examples."
+        },
+        {
+          "name": "Get-Command",
+          "aliases": ["gcm", "command"],
+          "description": "Lists all available commands, functions, and aliases.",
+          "syntax": "Get-Command [[-Name] <string>]",
+          "examples": ["gcm", "Get-Command -Verb Get", "command *-Process"],
+          "notes": "Use -Verb and -Noun to filter. Use -Module to see module commands."
+        },
+        {
+          "name": "Get-Member",
+          "aliases": ["gm"],
+          "description": "Shows the properties and methods of an object.",
+          "syntax": "Get-Member",
+          "examples": ["ls | gm", "ps | Get-Member -MemberType Property"],
+          "notes": "Pipe any object to gm to see what you can do with it."
+        },
+        {
+          "name": "Get-Alias",
+          "aliases": ["gal"],
+          "description": "Lists or resolves PowerShell aliases.",
+          "syntax": "Get-Alias [[-Name] <string>]",
+          "examples": ["gal", "gal ls", "gal -Definition Get-ChildItem"],
+          "notes": "Use -Definition to find aliases that point to a specific command."
+        },
+        {
+          "name": "New-Alias",
+          "aliases": ["nal"],
+          "description": "Creates a new alias for a command or function.",
+          "syntax": "New-Alias [-Name] <string> [-Value] <string>",
+          "examples": ["nal g git", "nal ll ls"],
+          "notes": "Aliases only last for the current session unless added to profile."
+        },
+        {
+          "name": "Set-Alias",
+          "aliases": ["sal"],
+          "description": "Creates or changes an alias (overwrites existing).",
+          "syntax": "Set-Alias [-Name] <string> [-Value] <string>",
+          "examples": ["sal grep Select-String", "sal touch ni"],
+          "notes": "Use Export-Alias to save aliases to file."
+        },
+        {
+          "name": "Get-Variable",
+          "aliases": ["gv"],
+          "description": "Lists all variables in the current scope.",
+          "syntax": "Get-Variable [[-Name] <string>]",
+          "examples": ["gv", "gv PSVersionTable", "Get-Variable -Scope Global"],
+          "notes": "Use -Scope to see variables in specific scopes."
+        },
+        {
+          "name": "Set-Variable",
+          "aliases": ["sv", "set"],
+          "description": "Creates or sets the value of a variable.",
+          "syntax": "Set-Variable [-Name] <string> [-Value] <Object>",
+          "examples": ["sv name 'John'", "set -Name count -Value 42"],
+          "notes": "Use $variable = value as a shorthand."
+        },
+        {
+          "name": "Export-Csv",
+          "aliases": ["epcsv"],
+          "description": "Exports pipeline objects to a CSV file.",
+          "syntax": "Export-Csv [-Path] <string>",
+          "examples": ["ps | epcsv processes.csv", "ls | Export-Csv files.csv -NoTypeInfo"],
+          "notes": "Use -NoTypeInfo to omit the type header line."
+        },
+        {
+          "name": "Import-Csv",
+          "aliases": ["ipcsv"],
+          "description": "Imports a CSV file as PowerShell objects.",
+          "syntax": "Import-Csv [-Path] <string>",
+          "examples": ["$data = ipcsv data.csv", "Import-Csv users.csv | ft Name,Email"],
+          "notes": "Headers become property names of the resulting objects."
+        },
+        {
+          "name": "ConvertTo-Json",
+          "aliases": ["ctj"],
+          "description": "Converts PowerShell objects to JSON format.",
+          "syntax": "ConvertTo-Json",
+          "examples": ["$obj | ctj", "ls | ConvertTo-Json -Depth 3"],
+          "notes": "Use -Depth for nested objects. Use -Compress for minified output."
+        },
+        {
+          "name": "ConvertFrom-Json",
+          "aliases": ["cfj"],
+          "description": "Converts JSON strings to PowerShell objects.",
+          "syntax": "ConvertFrom-Json",
+          "examples": ["$json | cfj", "'{\"name\":\"John\"}' | ConvertFrom-Json"],
+          "notes": "The JSON input can be a string or file content."
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "icon": "\ud83d\udd12",
+      "commands": [
+        {
+          "name": "Get-ExecutionPolicy",
+          "aliases": ["gep"],
+          "description": "Shows the PowerShell script execution policy.",
+          "syntax": "Get-ExecutionPolicy",
+          "examples": ["gep"],
+          "notes": "Returns Restricted, RemoteSigned, AllSigned, or Unrestricted."
+        },
+        {
+          "name": "Set-ExecutionPolicy",
+          "aliases": ["sep"],
+          "description": "Sets the PowerShell script execution policy.",
+          "syntax": "Set-ExecutionPolicy [-ExecutionPolicy] <ExecutionPolicy>",
+          "examples": ["sep RemoteSigned", "Set-ExecutionPolicy Unrestricted -Scope CurrentUser"],
+          "notes": "Requires admin by default. Use -Scope CurrentUser for non-admin."
+        },
+        {
+          "name": "Get-Acl",
+          "aliases": ["gacl"],
+          "description": "Gets the Access Control List (permissions) for a file/folder.",
+          "syntax": "Get-Acl [-Path] <string>",
+          "examples": ["gacl file.txt", "Get-Acl C:\\ | fl"],
+          "notes": "Shows owner, group, and access rules."
+        },
+        {
+          "name": "Set-Acl",
+          "aliases": ["sac"],
+          "description": "Sets permissions on a file/folder using an ACL object.",
+          "syntax": "Set-Acl [-Path] <string> [-AclObject] <Object>",
+          "examples": ["sac file.txt -AclObject $acl"],
+          "notes": "Requires admin for system-protected items."
+        }
+      ]
+    },
+    {
+      "name": "Date & Time",
+      "icon": "\ud83d\udd52",
+      "commands": [
+        {
+          "name": "Get-Date",
+          "aliases": ["date"],
+          "description": "Returns the current date and time with formatting options.",
+          "syntax": "Get-Date [[-Date] <DateTime>]",
+          "examples": ["date", "Get-Date -Format 'dddd, MMMM dd'", "Get-Date -Year 2025 -Month 1 -Day 1"],
+          "notes": "Use -DisplayHint Date/Time/DateTime to control output."
+        },
+        {
+          "name": "Start-Sleep",
+          "aliases": ["sleep"],
+          "description": "Pauses execution for a specified duration.",
+          "syntax": "Start-Sleep [-Seconds] <int>",
+          "examples": ["sleep 5", "Start-Sleep -Milliseconds 500"],
+          "notes": "Use -Milliseconds for sub-second delays."
+        },
+        {
+          "name": "Measure-Command",
+          "aliases": ["mc"],
+          "description": "Measures how long a script or command takes to run.",
+          "syntax": "Measure-Command { <script> }",
+          "examples": ["Measure-Command { ls -Recurse C:\\ }", "mc { Start-Sleep 1 }"],
+          "notes": "Returns a TimeSpan object with TotalSeconds, etc."
+        }
+      ]
+    },
+    {
+      "name": "Environment",
+      "icon": "\ud83c\udf0d",
+      "commands": [
+        {
+          "name": "Get-ChildItem Env:",
+          "aliases": ["env", "gcen"],
+          "description": "Lists all environment variables.",
+          "syntax": "Get-ChildItem Env:",
+          "examples": ["env", "ls Env:PATH", "gcen | Where-Object Name -like 'USER*'"],
+          "notes": "Access individual vars: $env:VARNAME"
+        },
+        {
+          "name": "Set-Item Env:",
+          "aliases": ["setenv"],
+          "description": "Sets an environment variable value.",
+          "syntax": "Set-Item Env:<name> <value>",
+          "examples": ["setenv MY_VAR hello", "$env:MY_VAR = 'world'"],
+          "notes": "Only affects the current process. Use [Environment]::SetEnvironmentVariable for permanent."
+        },
+        {
+          "name": "Get-PSDrive",
+          "aliases": ["gdr"],
+          "description": "Lists all available drives (file system + PowerShell drives).",
+          "syntax": "Get-PSDrive",
+          "examples": ["gdr", "Get-PSDrive -PSProvider FileSystem"],
+          "notes": "Includes registry (HKLM, HKCU), certificate, and function drives."
+        }
+      ]
+    },
+    {
+      "name": "Scripting & Modules",
+      "icon": "\ud83e\udde9",
+      "commands": [
+        {
+          "name": "Get-Module",
+          "aliases": ["gmo"],
+          "description": "Lists loaded and available PowerShell modules.",
+          "syntax": "Get-Module [[-Name] <string>]",
+          "examples": ["gmo", "Get-Module -ListAvailable", "gmo ActiveDirectory"],
+          "notes": "Use -ListAvailable to see installable modules."
+        },
+        {
+          "name": "Import-Module",
+          "aliases": ["ipmo"],
+          "description": "Loads a PowerShell module into the current session.",
+          "syntax": "Import-Module [-Name] <string>",
+          "examples": ["ipmo ActiveDirectory", "Import-Module .\\myModule.psm1"],
+          "notes": "Modules can be loaded from any path."
+        },
+        {
+          "name": "Install-Module",
+          "aliases": ["inmo"],
+          "description": "Installs a module from the PowerShell Gallery.",
+          "syntax": "Install-Module [-Name] <string>",
+          "examples": ["inmo PowerShellGet", "Install-Module Posh-Git -Scope CurrentUser"],
+          "notes": "Requires NuGet provider. Use -Scope CurrentUser to avoid admin."
+        },
+        {
+          "name": "Update-Module",
+          "aliases": ["upmo"],
+          "description": "Updates installed PowerShell modules to latest version.",
+          "syntax": "Update-Module [[-Name] <string>]",
+          "examples": ["upmo", "Update-Module Pester"],
+          "notes": "Without -Name, updates all modules."
+        },
+        {
+          "name": "Find-Module",
+          "aliases": ["fmo"],
+          "description": "Searches the PowerShell Gallery for modules.",
+          "syntax": "Find-Module [[-Name] <string>]",
+          "examples": ["fmo *git*", "Find-Module -Name Pester"],
+          "notes": "Search supports wildcards."
+        },
+        {
+          "name": "New-Module",
+          "aliases": ["nmo"],
+          "description": "Creates an in-memory module with custom functions.",
+          "syntax": "New-Module [-Name] <string> [-ScriptBlock] <scriptblock>",
+          "examples": ["nmo MyModule { function hello { 'hi' } }"],
+          "notes": "Use -ReturnResult to export module members."
+        },
+        {
+          "name": "Write-Output",
+          "aliases": ["echo", "write"],
+          "description": "Sends output to the pipeline or console.",
+          "syntax": "Write-Output [-InputObject] <Object>",
+          "examples": ["echo 'hello'", "Write-Output (Get-Date)"],
+          "notes": "Implicit output is the same as Write-Output."
+        },
+        {
+          "name": "Write-Host",
+          "aliases": ["wh"],
+          "description": "Writes directly to the console (not to pipeline).",
+          "syntax": "Write-Host [[-Object] <Object>]",
+          "examples": ["wh 'hello' -ForegroundColor Green", "Write-Host 'Error!' -Fore Red"],
+          "notes": "Use -ForegroundColor and -BackgroundColor for colors."
+        },
+        {
+          "name": "Write-Progress",
+          "aliases": ["wp"],
+          "description": "Displays a progress bar in the console.",
+          "syntax": "Write-Progress [-Activity] <string> [-PercentComplete] <int>",
+          "examples": ["Write-Progress -Activity 'Processing' -PercentComplete 50"],
+          "notes": "Use in loops to show long-running operation progress."
+        },
+        {
+          "name": "Write-Verbose",
+          "aliases": ["wv"],
+          "description": "Outputs verbose log messages (requires -Verbose switch).",
+          "syntax": "Write-Verbose [-Message] <string>",
+          "examples": ["wv 'Starting process...'"],
+          "notes": "Only visible when running with -Verbose common parameter."
+        },
+        {
+          "name": "Write-Debug",
+          "aliases": ["wd"],
+          "description": "Outputs debug messages to the console.",
+          "syntax": "Write-Debug [-Message] <string>",
+          "examples": ["wd 'Value is: $x'"],
+          "notes": "Only visible when $DebugPreference is Continue or Inquire."
+        },
+        {
+          "name": "Write-Error",
+          "aliases": ["werr"],
+          "description": "Writes an error to the error stream.",
+          "syntax": "Write-Error [-Message] <string>",
+          "examples": ["Write-Error 'File not found'", "werr -Category ObjectNotFound"],
+          "notes": "Does not terminate the script. Use throw for terminating errors."
+        }
+      ]
+    }
+  ]
+}

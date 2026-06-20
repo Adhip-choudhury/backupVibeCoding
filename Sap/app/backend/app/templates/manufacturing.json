@@ -1,0 +1,22 @@
+{
+  "name": "Manufacturing Assembly Line",
+  "description": "Raw material -> Machining -> Assembly -> Quality Check -> Packaging -> Shipping",
+  "nodes": [
+    {"id":"start","type":"Start","position":{"x":50,"y":200},"label":"Order Received","properties":{}},
+    {"id":"machining","type":"Task","position":{"x":220,"y":200},"label":"Machining","properties":{"durationSecs":{"mean":90,"distribution":"normal","stdDev":15},"resourcesRequired":["CNC_Machine"],"successRate":0.97,"costPerRun":8}},
+    {"id":"assembly","type":"Task","position":{"x":400,"y":200},"label":"Assembly","properties":{"durationSecs":{"mean":150,"distribution":"normal","stdDev":20},"resourcesRequired":["Worker_1","Worker_2"],"successRate":0.95,"costPerRun":12}},
+    {"id":"qc","type":"Decision","position":{"x":580,"y":200},"label":"Quality Check","properties":{"successRate":0.9}},
+    {"id":"packaging","type":"Task","position":{"x":760,"y":120},"label":"Packaging","properties":{"durationSecs":{"mean":45,"distribution":"fixed"},"resourcesRequired":["Packaging_Line"],"successRate":0.99,"costPerRun":3}},
+    {"id":"rework","type":"Task","position":{"x":760,"y":300},"label":"Rework","properties":{"durationSecs":{"mean":180,"distribution":"normal","stdDev":30},"resourcesRequired":["Worker_1"],"successRate":0.8,"costPerRun":15}},
+    {"id":"end","type":"End","position":{"x":920,"y":120},"label":"Shipped","properties":{}}
+  ],
+  "edges": [
+    {"id":"e1","source":"start","target":"machining"},
+    {"id":"e2","source":"machining","target":"assembly"},
+    {"id":"e3","source":"assembly","target":"qc"},
+    {"id":"e4","source":"qc","target":"packaging","label":"Pass"},
+    {"id":"e5","source":"qc","target":"rework","label":"Fail"},
+    {"id":"e7","source":"rework","target":"assembly"},
+    {"id":"e6","source":"packaging","target":"end"}
+  ]
+}

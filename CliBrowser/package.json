@@ -1,0 +1,25 @@
+{
+  "name": "nuclus-cli",
+  "version": "1.0.0",
+  "description": "NuclusCli - Browser + Terminal with AI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "node-pty": "^1.1.0",
+    "openai": "^6.39.1",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0"
+  }
+}
